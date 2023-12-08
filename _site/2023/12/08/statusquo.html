@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Server Setup Part 0 - Status Quo | Derisis13’s temporary blog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Server Setup Part 0 - Status Quo" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Since August I’ve been upgrading my home server setup. It’s not yet 100% complete, but most of the architectural decisions are already behind me. I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something. This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade. This should serve as a comparison baseline." />
+<meta property="og:description" content="Since August I’ve been upgrading my home server setup. It’s not yet 100% complete, but most of the architectural decisions are already behind me. I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something. This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade. This should serve as a comparison baseline." />
+<link rel="canonical" href="http://localhost:4000/2023/12/08/statusquo.html" />
+<meta property="og:url" content="http://localhost:4000/2023/12/08/statusquo.html" />
+<meta property="og:site_name" content="Derisis13’s temporary blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-12-08T00:00:00+01:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Server Setup Part 0 - Status Quo" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-12-08T00:00:00+01:00","datePublished":"2023-12-08T00:00:00+01:00","description":"Since August I’ve been upgrading my home server setup. It’s not yet 100% complete, but most of the architectural decisions are already behind me. I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something. This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade. This should serve as a comparison baseline.","headline":"Server Setup Part 0 - Status Quo","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2023/12/08/statusquo.html"},"url":"http://localhost:4000/2023/12/08/statusquo.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Derisis13&apos;s temporary blog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Derisis13&#39;s temporary blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Server Setup Part 0 - Status Quo</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-12-08T00:00:00+01:00" itemprop="datePublished">Dec 8, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Since August I’ve been upgrading my home server setup.
+It’s not yet 100% complete, but most of the architectural decisions are already behind me.
+I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something.
+This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade.
+This should serve as a comparison baseline.</p>
+
+<h2 id="nas">NAS</h2>
+
+<p>I had a 2-bay Synology NAS for some years now.
+It has been passed down to me from a family member along with drives to populate it.
+It’s configured in RAID-1 with 2x 3TB HDDs.
+This capacity was almost filled up, which meant it was time to migrate from it.</p>
+
+<p>This NAS ran an SMB server, an ISCSI target, a VPN server, a DDNS updater, streamed music and had a BitTorrent client.
+The processor and RAM limitations crippled the responsiveness of these services, and the configuration was very limited as well.
+It was a good computer, but it no longer satisfied my needs - at least not for the price I wanted to pay.</p>
+
+<h2 id="linux-server">Linux server</h2>
+
+<p>To expand into additional services that my NAS couldn’t provide, I got a cheap laptop with a broken hinge (from a family member as well) and installed the XFCE spin of Fedora workstation on it.
+I like this device for how simple it is: 5W idle power draw, 4-core Intel CPU (passively cooled by a piece of metal), the entire board being just one card, except the socketed RAM and the WLAN card (which I found has no black/whitelist).
+Its IO is limited to 2 USB, 2 SATA (one for ODD) and 100MB internet.
+The keyboard and screen were nice to have when I started out, and the battery came in useful during power outages.</p>
+
+<p>This would have been a terrible fileserver but it ran PiHole and HomeAssistant in docker with great stability until recently the network interface started having issues.
+Fun fact: this was also the machine I used for building Fedora packages for ani-cli.</p>
+
+<h2 id="what-wont-change-now">What won’t change now</h2>
+
+<p>I’ll go over a few devices I use at home but won’t change now.
+They are still relevant as services will interact with them.</p>
+
+<p>I picked up a decent-size UPS from the trash a few years ago - it turned out to only need a new battery.
+Now it has backup power for my NAS and router.</p>
+
+<p>My networking is done by an ISP-provided all-in-one, which I hate but don’t want to change just now.
+There’s also an unmanaged network switch to provide extra wired connections.</p>
+
+<p>For media, I have a Chromecast (TV is not smart), a Pi 3 with Kodi and a Pi 1 with Volumio.
+With the exception of the Chromecast they get their files trough mounted SMB shares.</p>
+
+<p>There are a few IoT devices with open firmware I use for home automation and some that aren’t connected to the internet because their firmware is proprietary, outdated and they would be a security risk to my network.</p>
+
+<h2 id="comming-up">Comming up</h2>
+
+<ol>
+  <li>Host System - the metal that’ll run my services</li>
+  <li>Filesystem layout - from disks to directories</li>
+  <li>Networking - connecting to the web</li>
+  <li>Docker and nextcloud - how not to get in your own way</li>
+  <li>Torrent and media management - My Lord, is that legal?</li>
+  <li>Media serving - the forgotten world of DLNA and UPNP/AV</li>
+  <li>Home automation - my home is smart</li>
+  <li>Backup strategy - because RAID is not a backup</li>
+  <li>Migration - moving it all in</li>
+</ol>
+
+  </div><a class="u-url" href="/2023/12/08/statusquo.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Derisis13&#39;s temporary blog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Derisis13&#39;s temporary blog</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/derisis13"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">derisis13</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Just some nerd rambling</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
