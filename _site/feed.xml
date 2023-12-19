@@ -1,4 +1,86 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-12-08T21:04:12+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Server Setup Part 0 - Status Quo</title><link href="http://localhost:4000/2023/12/08/statusquo.html" rel="alternate" type="text/html" title="Server Setup Part 0 - Status Quo" /><published>2023-12-08T00:00:00+01:00</published><updated>2023-12-08T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/08/statusquo</id><content type="html" xml:base="http://localhost:4000/2023/12/08/statusquo.html">&lt;p&gt;Since August I’ve been upgrading my home server setup.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-12-19T01:05:24+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Singularity Feedback Loop</title><link href="http://localhost:4000/2023/12/19/singularity.html" rel="alternate" type="text/html" title="Singularity Feedback Loop" /><published>2023-12-19T00:00:00+01:00</published><updated>2023-12-19T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/19/singularity</id><content type="html" xml:base="http://localhost:4000/2023/12/19/singularity.html">&lt;p&gt;In this short essay, I’ll examine the idea of the Singularity Feedback Loop.
+I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.&lt;/p&gt;
+
+&lt;h1 id=&quot;growth-and-singularity&quot;&gt;Growth and Singularity&lt;/h1&gt;
+
+&lt;p&gt;The idea of Singularity is simple: once men create a machine capable of producing a better machine than humans could, it then repeats this process indefinitely.
+At the birth of the computer, intelligence became a physical product - and thus it can be manufactured by machines.
+With the emergence of generative AI models we have seen working computer code written by computer code, however, these are still much less complex than the generating program.
+Based on the exponential growth of computers’ transistor counts (known as Moore’s law), it’s not too difficult to theorize something similar for AI.&lt;/p&gt;
+
+&lt;p&gt;But even Gordon Moore acknowledged the “red brick wall”, beyond which growth is impossible, due to physical limitations.
+And as anyone who has learned system theory knows, even feedback - no matter how explosive it is - is limited by the boundaries of the system it’s part of.
+Growth forever is possible, in the case of asymptotic growth, but this isn’t a continuously accelerating process.
+To think you can create something out of nothing or more out of less contradicts the laws of thermodynamics.
+You would have - even if not in the traditional sense - made a perpetuum mobile.
+And the thing that can create something out of nothing has always been a religious deity.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-singularity-is-religious&quot;&gt;The Singularity is religious&lt;/h1&gt;
+
+&lt;p&gt;And so the followers of this discipline created their own religions - extropianism, singulitarianism - they believe something that’s above the laws of the world as we know it.
+And from it, they seek to free mankind from its flesh prison, much like traditional religions.
+But unlike how the followers of other religions claim to have seen or heard their deity, or at least know someone who has; not a single person has made contact with the Singularity, as it doesn’t exist yet.
+And if you ask me, it’ll never transcend the realm of fantasy, as it’s impossible to create something from nothing.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-singularity-is-the-philosophers-stone&quot;&gt;The Singularity is the Philosopher’s Stone&lt;/h1&gt;
+
+&lt;p&gt;Humans always had the desire to create the ultimate creation.
+Since the middle ages we have tried to make perpetual motion devices, and to this day charlatans are trying to sell them as “free energy devices”.
+A similar invention, that also made its way (conceptually) to Transhumanism is the philosopher’s stone, sought by the alchemists.
+This device would have provided its wielder eternal life (much like Transhumanists would like to artificially surpass death) and infinite wealth and prosperity (another goal of Transhumanism) by turning ordinary metals into gold.&lt;/p&gt;
+
+&lt;p&gt;Even though the alchemists never succeeded in their original goals (now we see why they didn’t even have a chance) their contribution to natural sciences is not negligible, and they had a comparable impact on the arts and literature.
+They never reached eternal life nor infinite wealth, but from their “failed” experiments came fragments of knowledge, on which modern science is built.
+So I keep smiling at the Transhumanists - as long as their methods are kept clean, I want them to carry out their experiments, and even though they won’t succeed, we can still be grateful for their “failed” attempts.&lt;/p&gt;</content><author><name></name></author><category term="philosophy" /><summary type="html">In this short essay, I’ll examine the idea of the Singularity Feedback Loop. I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.</summary></entry><entry><title type="html">Host System</title><link href="http://localhost:4000/2023/12/16/host.html" rel="alternate" type="text/html" title="Host System" /><published>2023-12-16T00:00:00+01:00</published><updated>2023-12-16T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/16/host</id><content type="html" xml:base="http://localhost:4000/2023/12/16/host.html">&lt;p&gt;This is part one of my server writeup.
+I’ll go through the hardware choices I made so far and the operating system and core software components.
+I’ll also briefly mention how I started out as well as what upgrades I’m planning to make.
+I didn’t want to buy something new because of budget concerns, so my choice was dictated by what I already had.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-rockpro64&quot;&gt;The RockPro64&lt;/h1&gt;
+
+&lt;p&gt;As the main platform running my home server, I choose the RockPro64, with 4GB of onboard memory.
+In &lt;a href=&quot;https://derisis13.github.io/2023/12/08/statusquo.html&quot;&gt;part zero&lt;/a&gt; I already spoke about the hardware I’m replacing, this single-board computer should be more powerful than both combined.
+I also experimented with a Chinese motherboard and an Intel i7-2670QM (a 2nd gen mobile i7) but I didn’t find the extra performance to be useful(&lt;a href=&quot;https://browser.geekbench.com/v5/cpu/16451184&quot;&gt;benchmark&lt;/a&gt;), and the power draw was too much for my taste.
+While my old setup used 20-21W combined, the x86 setup drew 35-36W on average while the RockPro64 drew 17-18W on average; all of them with two HDDs.
+If I ever feel like running out of CPU performance I can still try overclocking the RK3399, I haven’t experimented with this yet, but I hope the stock 1.42 GHz was a conservative choice.&lt;/p&gt;
+
+&lt;p&gt;I bought this SBC in 2021 to experiment on (in some sense this computer taught me to use Linux), and sat abandoned since the end of the 2nd COVID wave in a cardboard box.
+I ran it first in this cardboard box with two HDDs, but that couldn’t be the permanent solution, so I adapted it to some ITX mounting holes (with a piece of FR4) and placed it inside the biggest case I could find at home.
+This time I also included a bigger PCIe SATA card based on the ASM1166 and added two extra hard drives in RAID-6 (I’ll talk about this decision in the next chapter).
+Currently, the disks are 2x2TB and 2x1TB of spinning rust (for a total of 2TB pooled), but once the migration is complete it’ll have 4x 3TB for 6TB usable storage.&lt;/p&gt;
+
+&lt;p&gt;These parts are all spares I had lying around, they have bad sectors and they have strange read/write errors at the filesystem level that I attribute to them overloading the power supply.
+This is a salvaged unit I pulled from a set-top box (same as &lt;a href=&quot;https://ha5kfu.hu/404&quot;&gt;this one&lt;/a&gt; I used in another project) and it can officially provide 1A@12V.
+It was good enough when I started, but it seems I hit its limit.
+I already ordered a USB-C PD charger with a trigger board that should give me 3x as much power and not be a shock- and fire hazard.&lt;/p&gt;
+
+&lt;p&gt;The biggest limit of this setup is memory.
+4GB is just not enough to run Linux, docker containers and spin up at least one virtual machine.
+To make it just a little less critical (avoid the OOM killer) I added a 16GB microSD card as a swap partition - I have no idea how long it’ll hold but it’s cheap to replace.&lt;/p&gt;
+
+&lt;h1 id=&quot;openmediavault&quot;&gt;OpenMediaVault&lt;/h1&gt;
+
+&lt;p&gt;On my x86 server, I used TrueNAS Scale, and while I was satisfied with ZFS and how it handled SMB shares, the way it complained as soon as I tried to touch the CLI was off-putting and I couldn’t get used to its docker UI at all.
+Additionally, it’s not available on ARM as far as I know, so I couldn’t use it even if I wanted to.&lt;/p&gt;
+
+&lt;p&gt;So I installed Debian Bullseye and OpenMediaVault 6 on top (just like when I first bought the system).
+Many in the self-hosting community find OMV a lesser, unprofessional experience (as opposed to TrueNAS or UnRaid) but I really like the balance it strikes between ease of use and how similar it feels to the CLI tools I’m used to.
+With all of its plugins it offers a complete experience, and what’s missing can be added from docker.
+I currently have the plugins for system backups, borg backup, tgt (iSCSI target), wireguard, docker-compose, cputemp (installed by default), flashmemory (folder2ram, installed by default because I boot from eMMC) and kvm (although I no longer have a use for it).&lt;/p&gt;
+
+&lt;p&gt;All in all it’s a solid experience, OMV only adds to stock Debian and takes none of it away.
+I think this pattern is not appreciated enough.&lt;/p&gt;
+
+&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;I run a RockPro64 SBC with 4GB RAM, supported by some swap.
+The performance is just enough for my use case, but it leaves not much space for future expansion, I have it pretty much maxed with the software I’ll write about in the next parts.
+Storage still needs to be upgraded (I still have to purchase the drives) and the PSU is at its limit, but a new one is on its way.&lt;/p&gt;
+
+&lt;p&gt;I installed OpenMediaVault and I love how it only adds to Linux and takes nothing away.
+It’s a solid foundation for my storage and other services and I find it more convenient than TrueNAS Scale.&lt;/p&gt;
+
+&lt;p&gt;In the next part, I’ll write about the storage setup, from hard disks to folders.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This is part one of my server writeup. I’ll go through the hardware choices I made so far and the operating system and core software components. I’ll also briefly mention how I started out as well as what upgrades I’m planning to make. I didn’t want to buy something new because of budget concerns, so my choice was dictated by what I already had.</summary></entry><entry><title type="html">Server Setup Part 0 - Status Quo</title><link href="http://localhost:4000/2023/12/08/statusquo.html" rel="alternate" type="text/html" title="Server Setup Part 0 - Status Quo" /><published>2023-12-08T00:00:00+01:00</published><updated>2023-12-08T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/08/statusquo</id><content type="html" xml:base="http://localhost:4000/2023/12/08/statusquo.html">&lt;p&gt;Since August I’ve been upgrading my home server setup.
 It’s not yet 100% complete, but most of the architectural decisions are already behind me.
 I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something.
 This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade.
