@@ -18,7 +18,7 @@ title: Derisis13's temporary blog
 description: >- # this means to ignore newlines until "baseurl:"
   Just some nerd rambling
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://derisis13.github.io/" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: 
 github_username: derisis13 
 
