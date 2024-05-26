@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-05-07T12:13:55+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Host System</title><link href="http://localhost:4000/2024/05/06/host.html" rel="alternate" type="text/html" title="Host System" /><published>2024-05-06T00:00:00+02:00</published><updated>2024-05-06T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/06/host</id><content type="html" xml:base="http://localhost:4000/2024/05/06/host.html">&lt;p&gt;&lt;em&gt;This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-05-26T02:15:15+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Host System</title><link href="http://localhost:4000/2024/05/06/host.html" rel="alternate" type="text/html" title="Host System" /><published>2024-05-06T00:00:00+02:00</published><updated>2024-05-06T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/06/host</id><content type="html" xml:base="http://localhost:4000/2024/05/06/host.html">&lt;p&gt;&lt;em&gt;This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time.
 It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;This is part one of my server writeup.
@@ -50,7 +50,74 @@ Storage still needs to be upgraded (I still have to purchase the drives) and the
 &lt;p&gt;I installed OpenMediaVault and I love how it only adds to Linux and takes nothing away.
 It’s a solid foundation for my storage and other services and I find it more convenient than TrueNAS Scale.&lt;/p&gt;
 
-&lt;p&gt;In the next part, I’ll write about the storage setup, from hard disks to folders.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time. It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.</summary></entry><entry><title type="html">Singularity Feedback Loop</title><link href="http://localhost:4000/2023/12/19/singularity.html" rel="alternate" type="text/html" title="Singularity Feedback Loop" /><published>2023-12-19T00:00:00+01:00</published><updated>2023-12-19T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/19/singularity</id><content type="html" xml:base="http://localhost:4000/2023/12/19/singularity.html">&lt;p&gt;In this short essay, I’ll examine the idea of the Singularity Feedback Loop.
+&lt;p&gt;In the next part, I’ll write about the storage setup, from hard disks to folders.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time. It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.</summary></entry><entry><title type="html">Storage in my home server</title><link href="http://localhost:4000/2024/04/17/storage.html" rel="alternate" type="text/html" title="Storage in my home server" /><published>2024-04-17T00:00:00+02:00</published><updated>2024-04-17T00:00:00+02:00</updated><id>http://localhost:4000/2024/04/17/storage</id><content type="html" xml:base="http://localhost:4000/2024/04/17/storage.html">&lt;p&gt;This is part two of my server writeup.
+I’ll discuss how I organized the storage of my server starting from the hard drives, touching on file systems and redundancy, and even going into the folder structure, permissions and shared folders.&lt;/p&gt;
+
+&lt;h1 id=&quot;changes-to-the-host-system&quot;&gt;Changes to the host system&lt;/h1&gt;
+
+&lt;p&gt;As I mentioned in my last post, my power solution is the weakest link in my system.
+Changing to a USB-C PD charger and trigger board didn’t help much either: the current spikes from hardware spinup were too much even for that.
+In this regard, I’m finding the salvaged PSU better, but I won’t change back to it, as it’d be a shock and fire hazard.
+Having an unstable PSU caused corruption of my data, which is unacceptable.&lt;/p&gt;
+
+&lt;p&gt;The requirements also changed since last time: I no longer intend to replace the Synology NAS, I only want to store my data on this server.
+This allowed me to drop two of the four redundant disks, which means I’m inside the power budget, however even with two disks I was still getting some errors.
+Strangely the errors were only affecting one disk.
+I got one with the same capacity to replace it, but the system became unusably glitchy, crashing and rebooting after about an hour of usage, every single time, until none of the disks were detected.
+It turned out that the six-port PCIe-SATA adapter died on me.
+I replaced it with the two-port one I wrote about in part zero (as it’s sufficient now), and then also replaced the misbehaving disk with another one.&lt;/p&gt;
+
+&lt;p&gt;With these modifications, my server has been running stable for more than a month now (except when I tripped a breaker, but let’s not count that).
+No crashes, no errors in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dmesg&lt;/code&gt;.
+It appears I’ve fixed all hardware issues, and I can move on with the configuration.&lt;/p&gt;
+
+&lt;h1 id=&quot;block-storage-and-file-system&quot;&gt;Block storage and file system&lt;/h1&gt;
+
+&lt;p&gt;The system boots from a 16GB eMMC module I bought with the SBC.
+It’s fine for the most part, but container and VM images need to live elsewhere, as they wouldn’t fit otherwise.&lt;/p&gt;
+
+&lt;p&gt;I also briefly used a 16GB SD card for swapping (to avoid the OOM killer) but I removed it when the server was crashing constantly.
+It doesn’t look like the system is missing it at all.&lt;/p&gt;
+
+&lt;p&gt;There’s a 2.5” 1TB HDD attached via a USB3 SATA adapter that serves as a non-redundant local backup storage.
+I use it to push (borg) backups from my laptop to and for backups of the most important data on the server as well as system and docker configurations.
+It’s formatted to BTRFS to take advantage of its extra features (compared to ext4).&lt;/p&gt;
+
+&lt;p&gt;The main storage is the two 1TB HDDs in BTRFS-RAID1.
+I choose BTRFS for redundancy instead of MDRAID, because this way BTRFS can take full advantage of the redundancy and correct more errors.
+I’m not sure if it’s a testament to this or the quality of my “power supplies”, but while I had 20-30 files rendered partially unreadable with my RAID-6 config, I had none with the BTRFS-RAID1 one.
+Do note, that BTRFS on multiple devices is not the best idea, see this article for details: https://arstechnica.com/gadgets/2021/09/examining-btrfs-linuxs-perpetually-half-finished-filesystem/
+The best solution would be ZFS, but as explained previously, it’s not possible for now.&lt;/p&gt;
+
+&lt;h1 id=&quot;folder-layout-and-permissions&quot;&gt;Folder layout and permissions&lt;/h1&gt;
+
+&lt;p&gt;The redundant array serves two purposes: it holds docker configurations (to increase availability) and all the user data.
+They are separated into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;compose/&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fileserver/&lt;/code&gt;.
+Compose holds docker, volumes and compose-files, but not images.
+Fileserver is shared via SMB and houses one folder for each user, plus a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public/&lt;/code&gt; directory.
+They all have &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Documents/&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Downloads/&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Music/&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Pictures/&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Templates/&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Videos/&lt;/code&gt; but media is usually uploaded to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;public/&lt;/code&gt; and documents are kept in user directories.&lt;/p&gt;
+
+&lt;p&gt;Everything on this array is owned by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data:users&lt;/code&gt;.
+I would have liked to restrict (write) access to user directories to the users that they belong to, but Nextcloud (which I extensively use) mandates that all directories are owned by the mentioned user and group.
+To enforce this, all docker containers are configured with a PUID of 33, a PGID of 100 and a UMASK of 002, and in SMB &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forceuser=www-data&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;forcegroup=users&lt;/code&gt; options are set for the share.
+NFS is avoided since it doesn’t have these options.&lt;/p&gt;
+
+&lt;p&gt;On the root of the non-redundant disk, there’s a directory exposed as an SMB share, titled “Backup”.
+Its purpose is to allow backups to be made from computers on the local network.
+An Rsync task is set up to create a copy of it in an offsite NAS in the family for a 3-2-1 backup scheme.
+Outside of the backup directory is a folder containing docker images and another one for Jellyfin to use as a (transcode) cache and metadata storage.
+These aren’t critical so it’d be a waste to store them on RAID.
+In the future, I’d like to set up an Rsync target to this disk to receive remote backups from someone.
+I also set up an ISCSI target on this disk but I have yet to put it to use.&lt;/p&gt;
+
+&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;I have 2 TB of usable space in my server.
+1 TB is redundant and is used as a high-availability NAS, with only the most important files backed up elsewhere.
+The other 1TB is non-redundant and is used only for containers, caching and as a local backup storage, which saved me a lot of time already.
+The local backups are further reinforced by an offsite copy, at a family member.
+They are both running BTRFS for its advanced features.
+Various workarounds are in effect on the redundant array to ensure compatibility with Nextcloud, for which all files need to be owned by a specific user and group.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This is part two of my server writeup. I’ll discuss how I organized the storage of my server starting from the hard drives, touching on file systems and redundancy, and even going into the folder structure, permissions and shared folders.</summary></entry><entry><title type="html">Singularity Feedback Loop</title><link href="http://localhost:4000/2023/12/19/singularity.html" rel="alternate" type="text/html" title="Singularity Feedback Loop" /><published>2023-12-19T00:00:00+01:00</published><updated>2023-12-19T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/19/singularity</id><content type="html" xml:base="http://localhost:4000/2023/12/19/singularity.html">&lt;p&gt;In this short essay, I’ll examine the idea of the Singularity Feedback Loop.
 I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.&lt;/p&gt;
 
 &lt;h1 id=&quot;growth-and-singularity&quot;&gt;Growth and Singularity&lt;/h1&gt;
