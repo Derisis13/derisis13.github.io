@@ -1,56 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-05-26T02:15:15+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Host System</title><link href="http://localhost:4000/2024/05/06/host.html" rel="alternate" type="text/html" title="Host System" /><published>2024-05-06T00:00:00+02:00</published><updated>2024-05-06T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/06/host</id><content type="html" xml:base="http://localhost:4000/2024/05/06/host.html">&lt;p&gt;&lt;em&gt;This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time.
-It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-07-26T01:28:44+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">8VIM review</title><link href="http://localhost:4000/2024/07/26/8vim.html" rel="alternate" type="text/html" title="8VIM review" /><published>2024-07-26T00:00:00+02:00</published><updated>2024-07-26T00:00:00+02:00</updated><id>http://localhost:4000/2024/07/26/8vim</id><content type="html" xml:base="http://localhost:4000/2024/07/26/8vim.html">&lt;p&gt;8VIM is an alternative keyboard created by Ravi Agarwal.
+ Its premise is to replace the traditional target-based typing on touchscreens with more ergonomic, fast, and memorable gestures.
+ It promises better accuracy, speed, and helpful shortcuts for editing text while typing.
+ After one month of learning and then six months of exclusive usage on mobile, I’m ready to give my review.
+ I’m comparing it to OpenBoard, my previous keyboard app, in both cases using the Hungarian layout, as I need to write using the language’s special (umlaut) characters.&lt;/p&gt;
 
-&lt;p&gt;This is part one of my server writeup.
-I’ll go through the hardware choices I made so far and the operating system and core software components.
-I’ll also briefly mention how I started out as well as what upgrades I’m planning to make.
-I didn’t want to buy something new because of budget concerns, so my choice was dictated by what I already had.&lt;/p&gt;
+&lt;h1 id=&quot;getting-used-to&quot;&gt;Getting used to&lt;/h1&gt;
 
-&lt;h1 id=&quot;the-rockpro64&quot;&gt;The RockPro64&lt;/h1&gt;
+&lt;p&gt;Just like regular vim, usage is initially limited by a lack of practice.
+ As mentioned above, it took me a month to stop learning, meaning that I ceased to see any improvement in my speed or accuracy.
+ The reason I’m hesitant to say I’ve mastered it is that neither aspect was to my liking—it was neither faster nor more accurate than OpenBoard.&lt;/p&gt;
 
-&lt;p&gt;As the main platform running my home server, I choose the RockPro64, with 4GB of onboard memory.
-In &lt;a href=&quot;https://derisis13.github.io/2023/12/08/statusquo.html&quot;&gt;part zero&lt;/a&gt; I already spoke about the hardware I’m replacing, this single-board computer should be more powerful than both combined.
-I also experimented with a Chinese motherboard and an Intel i7-2670QM (a 2nd gen mobile i7) but I didn’t find the extra performance to be useful (&lt;a href=&quot;https://browser.geekbench.com/v5/cpu/16451184&quot;&gt;benchmark&lt;/a&gt;), and the power draw was too much for my taste.
-While my old setup used 20-21W combined, the x86 setup drew 35-36W on average while the RockPro64 drew 17-18W on average; all of them with two HDDs.
-If I ever feel like running out of CPU performance I can still try overclocking the RK3399, I haven’t experimented with this yet, but I hope the stock 1.42 GHz was a conservative choice.&lt;/p&gt;
+&lt;h1 id=&quot;the-good&quot;&gt;The good&lt;/h1&gt;
 
-&lt;p&gt;I bought this SBC in 2021 to experiment on (in some sense this computer taught me to use Linux), and sat abandoned since the end of the 2nd COVID wave in a cardboard box.
-I ran it first in this cardboard box with two HDDs, but that couldn’t be the permanent solution, so I adapted it to some ITX mounting holes (with a piece of FR4) and placed it inside the biggest case I could find at home.
-This time I also included a bigger PCIe SATA card based on the ASM1166 and added two extra hard drives in RAID-6 (I’ll talk about this decision in the next chapter).
-Currently, the disks are 2x2TB and 2x1TB of spinning rust (for a total of 2TB pooled), but once the migration is complete it’ll have 4x 3TB for 6TB usable storage.&lt;/p&gt;
+&lt;p&gt;The clipboard is very well done.
+Having a paste gesture is convenient and the clipboard history is a first-class implementation.
+The one thing I didn’t understand is, why pasting is disabled when typing passwords.
+As autofill is still broken within my password manager, this made it really troublesome to log in.
+Since most of my passwords are unique, and I rely on a manager to keep track of them, this was a real hindrance.&lt;/p&gt;
 
-&lt;p&gt;These parts are all spares I had lying around, they have bad sectors and they have strange read/write errors at the filesystem level that I attribute to them overloading the power supply.
-This is a salvaged unit I pulled from a set-top box (same as &lt;a href=&quot;https://ha5kfu.hu/2023/04/05/vfd-kijelzo-ujrahasznositasa/&quot;&gt;this one&lt;/a&gt; I used in another project) and it can officially provide 1A@12V.
-It was good enough when I started, but it seems I hit its limit.
-I already ordered a USB-C PD charger with a trigger board that should give me 3x as much power and not be a shock- and fire hazard.&lt;/p&gt;
+&lt;p&gt;Navigation gestures are also the best I’ve experienced.
+They are a strong selling point of the application, there’s a good reason why Termux also includes arrow keys in its auxiliary keybar.
+Speaking of Termux, the control modifier can also be useful, but most of the time apps don’t expect it, so it’s not as useful as I wished it was.&lt;/p&gt;
 
-&lt;p&gt;The biggest limit of this setup is memory.
-4GB is just not enough to run Linux, docker containers and spin up at least one virtual machine.
-To make it just a little less critical (avoid the OOM killer) I added a 16GB microSD card as a swap partition - I have no idea how long it’ll hold but it’s cheap to replace.&lt;/p&gt;
+&lt;p&gt;But the primary reason I wanted to use 8VIM was the ability to touch type.
+With vibration feedback, I could look away from the screen and still be sure what I was typing was correct - although it was slower than looking at my input.
+I’ve never tried any keyboard for the visually impaired, but 8VIM might hold its ground against them - assuming you can learn it blindly - at least for letters, that is.&lt;/p&gt;
 
-&lt;h1 id=&quot;openmediavault&quot;&gt;OpenMediaVault&lt;/h1&gt;
+&lt;h1 id=&quot;the-bad&quot;&gt;The bad&lt;/h1&gt;
 
-&lt;p&gt;On my x86 server, I used TrueNAS Scale, and while I was satisfied with ZFS and how it handled SMB shares, the way it complained as soon as I tried to touch the CLI was off-putting and I couldn’t get used to its docker UI at all.
-Additionally, it’s not available on ARM as far as I know, so I couldn’t use it even if I wanted to.&lt;/p&gt;
+&lt;p&gt;It may have been due to my aged (4-year-old) phone, but 8VIM sometimes just froze and took no further input.
+It never lasted longer than a few seconds, but it was still annoying, even for that short time.&lt;/p&gt;
 
-&lt;p&gt;So I installed Debian Bullseye and OpenMediaVault 6 on top (just like when I first bought the system).
-Many in the self-hosting community find OMV a lesser, unprofessional experience (as opposed to TrueNAS or UnRaid) but I really like the balance it strikes between ease of use and how similar it feels to the CLI tools I’m used to.
-With all of its plugins it offers a complete experience, and what’s missing can be added from docker.
-I currently have the plugins for system backups, borg backup, tgt (iSCSI target), wireguard, docker-compose, cputemp (installed by default), flashmemory (folder2ram, installed by default because I boot from eMMC) and kvm (although I no longer have a use for it).&lt;/p&gt;
+&lt;p&gt;Since changing capitalization requires a full turn (which is longer than typing any character), an auto-capitalization would have been welcome.
+This problem is exacerbated by the annoyance of correcting mistakes: first finish the word, then swipe back, then correct the letter, and if you’re not careful, you insert an extra space you have to clean up.
+It’s not impossible, just tedious.&lt;/p&gt;
 
-&lt;p&gt;All in all it’s a solid experience, OMV only adds to stock Debian and takes none of it away.
-I think this pattern is not appreciated enough.&lt;/p&gt;
+&lt;p&gt;But the worst experience is with symbols and numbers.
+To type them you have to use a numpad, reverting to the old targeting method, instead of the gestures.
+It’s really annoying, especially when mixed with letters (for example ham callsigns).
+I wish they were more ergonomic, meaning I could input them blindly, and preferably without lifting my finger (literally).&lt;/p&gt;
 
-&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+&lt;h1 id=&quot;the-ugly&quot;&gt;The ugly&lt;/h1&gt;
 
-&lt;p&gt;I run a RockPro64 SBC with 4GB RAM, supported by some swap.
-The performance is just enough for my use case, but it leaves not much space for future expansion, I have it pretty much maxed with the software I’ll write about in the next parts.
-Storage still needs to be upgraded (I still have to purchase the drives) and the PSU is at its limit, but a new one is on its way.&lt;/p&gt;
+&lt;p&gt;In May, I started to grow suspicious of my speed and accuracy when typing, so I reverted to OpenBoard, just for comparison.
+As much as I wished it were not the case, I was neither slower nor did I make more mistakes.
+But the easy access to the numbers and the vast array of available symbols (something that was limited to four or five times less in 8VIM) were refreshingly convenient.&lt;/p&gt;
 
-&lt;p&gt;I installed OpenMediaVault and I love how it only adds to Linux and takes nothing away.
-It’s a solid foundation for my storage and other services and I find it more convenient than TrueNAS Scale.&lt;/p&gt;
+&lt;p&gt;OpenBoard’s clipboard history is just as good as 8VIM’s and is not hidden when I need it the most.
+Navigation is not as smooth as in 8VIM, but I can still swipe the spacebar to go left or right, which is almost as good.&lt;/p&gt;
 
-&lt;p&gt;In the next part, I’ll write about the storage setup, from hard disks to folders.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time. It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.</summary></entry><entry><title type="html">Storage in my home server</title><link href="http://localhost:4000/2024/04/17/storage.html" rel="alternate" type="text/html" title="Storage in my home server" /><published>2024-04-17T00:00:00+02:00</published><updated>2024-04-17T00:00:00+02:00</updated><id>http://localhost:4000/2024/04/17/storage</id><content type="html" xml:base="http://localhost:4000/2024/04/17/storage.html">&lt;p&gt;This is part two of my server writeup.
+&lt;p&gt;Another big improvement (that shouldn’t be one) is that OpenBoard can function in landscape mode - something that 8VIM developers just didn’t bother to fix.
+And while the enter “key” in 8VIM is inconsistent - sometimes inserting newline (eg. in Facebook Messenger), sometimes sending the message (eg. in Discord) - OpenBoard’s enter always puts newline.&lt;/p&gt;
+
+&lt;h1 id=&quot;verdict&quot;&gt;Verdict&lt;/h1&gt;
+
+&lt;p&gt;8VIM remains a party trick - a way to make your phone unusable for others - but no more.
+The touch typing promise is limited by the inability to input numbers and symbols blindly, and the promise of one-handedness is limited by the one hand’s grip without the thumb (as it’s used for typing).
+So unless you’re blind, have only one hand and only type telegraphs, it’s not for you.&lt;/p&gt;</content><author><name></name></author><category term="tech review" /><summary type="html">8VIM is an alternative keyboard created by Ravi Agarwal. Its premise is to replace the traditional target-based typing on touchscreens with more ergonomic, fast, and memorable gestures. It promises better accuracy, speed, and helpful shortcuts for editing text while typing. After one month of learning and then six months of exclusive usage on mobile, I’m ready to give my review. I’m comparing it to OpenBoard, my previous keyboard app, in both cases using the Hungarian layout, as I need to write using the language’s special (umlaut) characters.</summary></entry><entry><title type="html">Creating a better, new world</title><link href="http://localhost:4000/2024/05/26/creating-a-better-new-world.html" rel="alternate" type="text/html" title="Creating a better, new world" /><published>2024-05-26T00:00:00+02:00</published><updated>2024-05-26T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/26/creating-a-better-new-world</id><content type="html" xml:base="http://localhost:4000/2024/05/26/creating-a-better-new-world.html">&lt;p&gt;&lt;em&gt;A comparative analysis of Code Geass and Death Note&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Code Geass is one of my favourite anime, so when people recommended me Death Note as a similar story, I was intrigued.
+During the first episodes I saw the similarities in the motives, and decided to write a comparative analysis to extract the archetypes represented by the two protagonists (antagonists?), Lelouch vi Britannia and Light Yagami.
+Needless to say, this analysis contains full spoilers of both anime.&lt;/p&gt;
+
+&lt;h1 id=&quot;dark-tetrad-traits&quot;&gt;Dark tetrad traits&lt;/h1&gt;
+
+&lt;p&gt;The dark tetrad is an extension of the dark triad personality traits proposed by pscyhologists Delroy L. Paulhus and Kevin M. Williams.
+The dark triad encapsulates the traits narcisism (to hold oneself in extremely high regard, in some cases infallable), machiavellianism (to see other people as means to achieve onselve’s goal) and pscyhopaty (to be void of remorse and consciense).
+The fourt trait - sadism (to find pleasure in causing pain) - was proposed only later, extending the triad into a quad.
+This collection of personality types is considered dark because they each lean towards malevolance, exploitation and antisocial behaviour.
+Exploring these traits is the core of both stories, which is apparent in their main characters.&lt;/p&gt;
+
+&lt;p&gt;Light Yagami is a prime example of the dark tetrad.
+He’s clearly the unredeemable antagonist of the story, he’s fully aware of the consequences of his actions yet he’s fully committed to them.
+This is trait pscyhopaty, as he shows no remorse no matter who he has to kill to achieve his goal, his utopia.
+He also displays machiavellianism by even considering of sacraficing her sister to save himself, but also when pretending to work with the investigations and “befriends” L.
+Most notable is his narcisism, putting himself in the position of god of the new world, being extremely smug about his victories and trembling in the face of defeat.
+This is probably the most characteristic trait of Light.
+His sadism is questionable, because he doesn’t actively cause unneccessary pain, but how he can’t help but announce his victory every single time suggests that there might be some hint of it.&lt;/p&gt;
+
+&lt;p&gt;Lelouch vi Britannia is on the other hand a much lighter case.
+In some sense he can be called a humanitarian - rising against the opression of the Japanese, fighting for his sister, Nunally - it’s not clear troughout the story if he’s evil or good.
+Later it turns out that his support of the operssed was only a secondary goal to destroying his father, which marks him as a machiavelli person along with his exploitation of Rolo, Shirley and Karen.
+His thesis in his constant fighting with Suzaku is whether the ends justify the means, which furthers the machiavelli line.
+With the character of Zero he also exhibits similar narcisistic behaviour as Light, he deems himself as the maker of miracles (a roundabout way of saying I’m god) and their isolation inside their school environments also supports this.
+The feeling of righteousness is also a characteristic of a narcisist, because it puts them above the others morally.
+In the Zero requiem arc, Lelouch emphasises these traits to appear totally antagonistic and draw the hatred of the whole world onto himself.
+His self-sacrafice shows an imporvement in his narcisistic traits by admitting to the idea that the world would be better without him, but paradoxically also states that only he could bring about the end of worldwide conflict and opression.
+Sacraficing oneself is also the ultimate argument of his utlitarianism, by showing that even his life (something that many people hold most prescious) is below his final goal, maintaining his integrity even after betraying almost every single person that trusted him.
+Where he remains relatable (as oppose to Light) is how he feels remorseful and grieves many times during the series.
+This excludes him being a pscyhopat or a sadist, unlike Light.&lt;/p&gt;
+
+&lt;h1 id=&quot;values-and-motivations&quot;&gt;Values and motivations&lt;/h1&gt;
+
+&lt;p&gt;The backgrounds of the two antagonists (protagonists?) are strikingly similar.
+They both start off as excelling high-school students, which might be the most boring occupation out there.
+Where they diverge is the rest of the worlds they inhabit.
+While both find theirs rotten, Light lives in what’s essentially the same as our world - which although has its problems, but definitely doesn’t profit from his radical actions as Kira.
+On the other hand, Lelouch lives in a reality where there’s real opression, real genocide and real tyranny - even though he’s in the privileged class, he can’t stay silent about it.
+In both series, storytelling amplifies this argument, by showing only minimal crimes in Death Note but full purges and exploitation of the “elevens” in Code Geass.&lt;/p&gt;
+
+&lt;p&gt;The two characters’ families highly define their actions, but interestingly in an almost opposite way.
+Light has his sense of justice as a familial heritage from his father, and thus destined to pretend to be his ally, whereas Lelouch is at conflict with his father (and also most his half-siblings), and destined to fight against him.
+His sense of justice comes from his personal experience of abusement and goes against the exploitative nature of his ancestors - not unique in his generation, as Euphemia and Nunally also find Britannia despicable, but he’s the one who takes action first.&lt;/p&gt;
+
+&lt;p&gt;They both state they want to make the world a better place, and show that they are willing to go extreme measueres to acheive it.
+But there’s an interesting difference: Lelouch wants a world where he and his sister can live peacefully - which is value added to the existing - whereas Light wants a world without crime - which is something subtracted from the existing.
+I generally value constructive methods and tend to be sceptical of destructive methods.
+The outcome of the two stories seems to support this, as Lelouch attains redemption while Kira is punished as a criminal.&lt;/p&gt;
+
+&lt;p&gt;An interesting parallel is the assumption of sectret identities.
+Light is dubbed Kira by the internet, and Lelouch creates Zero as a (literal) mask for himself.
+This shows that they both willing to tell lies both to their families and to their allies to protect themselves.
+But they differ again in that Light - like a true pscyhopath - lies to anyone, even his last words are lies, but Lelouch is sworn against lying to Nunally.&lt;/p&gt;</content><author><name></name></author><category term="anime" /><summary type="html">A comparative analysis of Code Geass and Death Note</summary></entry><entry><title type="html">Storage in my home server</title><link href="http://localhost:4000/2024/05/26/storage.html" rel="alternate" type="text/html" title="Storage in my home server" /><published>2024-05-26T00:00:00+02:00</published><updated>2024-05-26T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/26/storage</id><content type="html" xml:base="http://localhost:4000/2024/05/26/storage.html">&lt;p&gt;This is part two of my server writeup.
 I’ll discuss how I organized the storage of my server starting from the hard drives, touching on file systems and redundancy, and even going into the folder structure, permissions and shared folders.&lt;/p&gt;
 
 &lt;h1 id=&quot;changes-to-the-host-system&quot;&gt;Changes to the host system&lt;/h1&gt;
@@ -117,7 +178,59 @@ I also set up an ISCSI target on this disk but I have yet to put it to use.&lt;/
 The other 1TB is non-redundant and is used only for containers, caching and as a local backup storage, which saved me a lot of time already.
 The local backups are further reinforced by an offsite copy, at a family member.
 They are both running BTRFS for its advanced features.
-Various workarounds are in effect on the redundant array to ensure compatibility with Nextcloud, for which all files need to be owned by a specific user and group.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This is part two of my server writeup. I’ll discuss how I organized the storage of my server starting from the hard drives, touching on file systems and redundancy, and even going into the folder structure, permissions and shared folders.</summary></entry><entry><title type="html">Singularity Feedback Loop</title><link href="http://localhost:4000/2023/12/19/singularity.html" rel="alternate" type="text/html" title="Singularity Feedback Loop" /><published>2023-12-19T00:00:00+01:00</published><updated>2023-12-19T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/19/singularity</id><content type="html" xml:base="http://localhost:4000/2023/12/19/singularity.html">&lt;p&gt;In this short essay, I’ll examine the idea of the Singularity Feedback Loop.
+Various workarounds are in effect on the redundant array to ensure compatibility with Nextcloud, for which all files need to be owned by a specific user and group.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This is part two of my server writeup. I’ll discuss how I organized the storage of my server starting from the hard drives, touching on file systems and redundancy, and even going into the folder structure, permissions and shared folders.</summary></entry><entry><title type="html">Host System</title><link href="http://localhost:4000/2024/05/06/host.html" rel="alternate" type="text/html" title="Host System" /><published>2024-05-06T00:00:00+02:00</published><updated>2024-05-06T00:00:00+02:00</updated><id>http://localhost:4000/2024/05/06/host</id><content type="html" xml:base="http://localhost:4000/2024/05/06/host.html">&lt;p&gt;&lt;em&gt;This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time.
+It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;This is part one of my server writeup.
+I’ll go through the hardware choices I made so far and the operating system and core software components.
+I’ll also briefly mention how I started out as well as what upgrades I’m planning to make.
+I didn’t want to buy something new because of budget concerns, so my choice was dictated by what I already had.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-rockpro64&quot;&gt;The RockPro64&lt;/h1&gt;
+
+&lt;p&gt;As the main platform running my home server, I choose the RockPro64, with 4GB of onboard memory.
+In &lt;a href=&quot;https://derisis13.github.io/2023/12/08/statusquo.html&quot;&gt;part zero&lt;/a&gt; I already spoke about the hardware I’m replacing, this single-board computer should be more powerful than both combined.
+I also experimented with a Chinese motherboard and an Intel i7-2670QM (a 2nd gen mobile i7) but I didn’t find the extra performance to be useful (&lt;a href=&quot;https://browser.geekbench.com/v5/cpu/16451184&quot;&gt;benchmark&lt;/a&gt;), and the power draw was too much for my taste.
+While my old setup used 20-21W combined, the x86 setup drew 35-36W on average while the RockPro64 drew 17-18W on average; all of them with two HDDs.
+If I ever feel like running out of CPU performance I can still try overclocking the RK3399, I haven’t experimented with this yet, but I hope the stock 1.42 GHz was a conservative choice.&lt;/p&gt;
+
+&lt;p&gt;I bought this SBC in 2021 to experiment on (in some sense this computer taught me to use Linux), and sat abandoned since the end of the 2nd COVID wave in a cardboard box.
+I ran it first in this cardboard box with two HDDs, but that couldn’t be the permanent solution, so I adapted it to some ITX mounting holes (with a piece of FR4) and placed it inside the biggest case I could find at home.
+This time I also included a bigger PCIe SATA card based on the ASM1166 and added two extra hard drives in RAID-6 (I’ll talk about this decision in the next chapter).
+Currently, the disks are 2x2TB and 2x1TB of spinning rust (for a total of 2TB pooled), but once the migration is complete it’ll have 4x 3TB for 6TB usable storage.&lt;/p&gt;
+
+&lt;p&gt;These parts are all spares I had lying around, they have bad sectors and they have strange read/write errors at the filesystem level that I attribute to them overloading the power supply.
+This is a salvaged unit I pulled from a set-top box (same as &lt;a href=&quot;https://ha5kfu.hu/2023/04/05/vfd-kijelzo-ujrahasznositasa/&quot;&gt;this one&lt;/a&gt; I used in another project) and it can officially provide 1A@12V.
+It was good enough when I started, but it seems I hit its limit.
+I already ordered a USB-C PD charger with a trigger board that should give me 3x as much power and not be a shock- and fire hazard.&lt;/p&gt;
+
+&lt;p&gt;The biggest limit of this setup is memory.
+4GB is just not enough to run Linux, docker containers and spin up at least one virtual machine.
+To make it just a little less critical (avoid the OOM killer) I added a 16GB microSD card as a swap partition - I have no idea how long it’ll hold but it’s cheap to replace.&lt;/p&gt;
+
+&lt;h1 id=&quot;openmediavault&quot;&gt;OpenMediaVault&lt;/h1&gt;
+
+&lt;p&gt;On my x86 server, I used TrueNAS Scale, and while I was satisfied with ZFS and how it handled SMB shares, the way it complained as soon as I tried to touch the CLI was off-putting and I couldn’t get used to its docker UI at all.
+Additionally, it’s not available on ARM as far as I know, so I couldn’t use it even if I wanted to.&lt;/p&gt;
+
+&lt;p&gt;So I installed Debian Bullseye and OpenMediaVault 6 on top (just like when I first bought the system).
+Many in the self-hosting community find OMV a lesser, unprofessional experience (as opposed to TrueNAS or UnRaid) but I really like the balance it strikes between ease of use and how similar it feels to the CLI tools I’m used to.
+With all of its plugins it offers a complete experience, and what’s missing can be added from docker.
+I currently have the plugins for system backups, borg backup, tgt (iSCSI target), wireguard, docker-compose, cputemp (installed by default), flashmemory (folder2ram, installed by default because I boot from eMMC) and kvm (although I no longer have a use for it).&lt;/p&gt;
+
+&lt;p&gt;All in all it’s a solid experience, OMV only adds to stock Debian and takes none of it away.
+I think this pattern is not appreciated enough.&lt;/p&gt;
+
+&lt;h1 id=&quot;summary&quot;&gt;Summary&lt;/h1&gt;
+
+&lt;p&gt;I run a RockPro64 SBC with 4GB RAM, supported by some swap.
+The performance is just enough for my use case, but it leaves not much space for future expansion, I have it pretty much maxed with the software I’ll write about in the next parts.
+Storage still needs to be upgraded (I still have to purchase the drives) and the PSU is at its limit, but a new one is on its way.&lt;/p&gt;
+
+&lt;p&gt;I installed OpenMediaVault and I love how it only adds to Linux and takes nothing away.
+It’s a solid foundation for my storage and other services and I find it more convenient than TrueNAS Scale.&lt;/p&gt;
+
+&lt;p&gt;In the next part, I’ll write about the storage setup, from hard disks to folders.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This post was supposed to be published in December 2023, but due to technical dificulties I didn’t do it at the time. It’s remained an important part of my server writeup, even though some of it is no longer representative of my setup.</summary></entry><entry><title type="html">Singularity Feedback Loop</title><link href="http://localhost:4000/2023/12/19/singularity.html" rel="alternate" type="text/html" title="Singularity Feedback Loop" /><published>2023-12-19T00:00:00+01:00</published><updated>2023-12-19T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/19/singularity</id><content type="html" xml:base="http://localhost:4000/2023/12/19/singularity.html">&lt;p&gt;In this short essay, I’ll examine the idea of the Singularity Feedback Loop.
 I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.&lt;/p&gt;
 
 &lt;h1 id=&quot;growth-and-singularity&quot;&gt;Growth and Singularity&lt;/h1&gt;
