@@ -15,7 +15,7 @@ Those who use AI to get creative work done: This is a warning!
 For at least five years, many have entertained the idea of the Internet of Things (IoT) bringing about the Fourth Industrial Revolution for developed countries.
 While this has yet to happen, recent advances in generative Artificial Intelligence (AI) make me wonder how it would look if it were to be the next revolution.
 
-In February 2023, David Rivers wrote an [article](https://agequodagis.subtrack.com/p/the-struggle-is-real) titled "The Struggle is Real," investigating the problematic nature of AI in entertainment and art.
+In February 2023, David Rivers wrote an [article](https://agequodagis.substack.com/p/the-struggle-is-real) titled "The Struggle is Real," investigating the problematic nature of AI in entertainment and art.
 He wrote about how the creative process is more than just having an idea and seeing it realized: it's hard work, and this is what gives creation value and meaning.
 This article inspired me to think about how using AI would affect my work as an (electronics) engineer and how it would affect anyone whose job is to create intellectual property.
 
