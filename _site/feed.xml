@@ -1,4 +1,79 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-11-25T00:36:29+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Server Setup Part 2 - Networking</title><link href="http://localhost:4000/2024/11/25/networking.html" rel="alternate" type="text/html" title="Server Setup Part 2 - Networking" /><published>2024-11-25T00:00:00+01:00</published><updated>2024-11-25T00:00:00+01:00</updated><id>http://localhost:4000/2024/11/25/networking</id><content type="html" xml:base="http://localhost:4000/2024/11/25/networking.html">&lt;p&gt;This is part three of my server writeup.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-12-15T00:03:34+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">Docker and Nextcloud</title><link href="http://localhost:4000/2024/12/14/docker.html" rel="alternate" type="text/html" title="Docker and Nextcloud" /><published>2024-12-14T00:00:00+01:00</published><updated>2024-12-14T00:00:00+01:00</updated><id>http://localhost:4000/2024/12/14/docker</id><content type="html" xml:base="http://localhost:4000/2024/12/14/docker.html">&lt;p&gt;This is part four of my server write-up.
+In the last part, I wrote about networking on my home server.
+This time, I’ll let you in on a little secret about how I share one drive between my various applications without ownership/permission problems.
+I derived this configuration from the Nextcloud, Servarr, and smbd documentation.
+As a reminder, my NAS is still running Openmediavault on a RockPro64 with 1 TB of RAID-1 redundant HDD storage and 500 GB of non-redundant SSD storage.
+The first is for bulk storage, and the second is for caching and backups.&lt;/p&gt;
+
+&lt;h1 id=&quot;docker&quot;&gt;Docker&lt;/h1&gt;
+
+&lt;p&gt;For those who have never heard of it, Docker is a containerization platform that I use for running most of my services on my NAS.
+Docker Compose is employed due to its convenience of having YAML files (compose files) describe services, which it then pulls like packages and runs like systemd services.
+Even more convenient is the Openmediavault Compose plugin that provides a web editor for my compose files and GUI buttons to interact with my containers.
+I found this to be the sweet spot between GUI and CLI Docker management, as I don’t have to SSH into my server, move to the directory of the compose file, and finally start it, but I was able to use what I knew about YAML and Compose without needing to learn any new concepts.
+This conservative approach makes it outshine Portainer, CasaOS, and whatever is built into TrueNAS Scale and Unraid.
+Those GUIs are much more difficult to translate to Docker/Compose syntax used by all the tutorials out there.
+Additionally, it exposes most functionalities that Docker provides, even ones I didn’t know about.
+This is another reason why it’s a solid choice for beginners.
+Apart from having SMB configured out of the box, this may be one of the best features of Openmediavault.&lt;/p&gt;
+
+&lt;p&gt;My containers are usually tracking the latest branch.
+The images are stored on the 500 GB SSD because they are too large to fit in the 16 GB eMMC of the RockPro64.
+I’m willing to take the risk of all my services shutting down if the SSD dies because I’m only afraid of data losses.
+Using the redundant storage would make them slower, and I would find it wasteful.
+I pull them by hand around once or twice a month.
+I don’t employ Watchtower or any other auto-update tool for the same reason I don’t run unattended upgrades—it’s an extra liability and makes troubleshooting an eventual problem more difficult.&lt;/p&gt;
+
+&lt;p&gt;The only thing I dislike about Docker is that it litters my system with virtual and bridge interfaces.
+Running &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker system prune&lt;/code&gt; is a must after updating the containers, but it only keeps the list from growing.
+Ideally, an LXC container (with nesting enabled) would be an excellent solution to keep the network shenanigans away from the host, but since that would require giving up the web UI, I never made that move.
+If I were running Proxmox, it would be a no-brainer.&lt;/p&gt;
+
+&lt;h1 id=&quot;nextcloud&quot;&gt;Nextcloud&lt;/h1&gt;
+
+&lt;p&gt;Nextcloud is a wonderful suite of applications designed as a self-hosted version of large cloud services (the Google suite, Office 365, Dropbox, etc.).
+I use it for sharing files with people (and computers) outside of my network, backing up photos from my phone, and synchronizing my calendar, contacts, Keepass file, notes, and tasks.
+For backing up photos, I use their Android app.
+It works, has plenty of options, and I don’t need more.
+For synchronizing contacts, calendar, and tasks, I use DAVx⁵.
+Again, it’s free software and just works.
+The password file is accessed through WebDAV by my password managers.
+I briefly used Nextcloud to listen to my music, but since Jellyfin is miles ahead in that region, I no longer need this functionality.
+The online editor got some use, but I find it hard to push it as most of my peers default to Google’s equivalent.&lt;/p&gt;
+
+&lt;p&gt;For managing my Nextcloud instance, I use the Docker AIO.
+It’s quite convenient due to its automated backups and self-contained nature.
+My only complaint is that once you set it up, reconfiguring some options (e.g., the domain to get the certificate for) is a massive pain—you should rather export all your data and start over.
+Still, I recommend it wholeheartedly to beginners, as it’s much easier than building it up component by component (which is totally possible, by the way).&lt;/p&gt;
+
+&lt;h1 id=&quot;storage-permissions&quot;&gt;Storage Permissions&lt;/h1&gt;
+
+&lt;p&gt;By default, Nextcloud stores its files inside its data directory, where touching them with any other program is not a real option.
+But since I wanted it to have access to the same files as my SMB server and so I could use my data hoarding tools to organize my media libraries, I mounted my user data directories (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/fileserver/user&lt;/code&gt;) inside Nextcloud as an external directory.
+The advantage is that an external directory can be “untrusted,” allowing for changes outside of Nextcloud to its content.
+Then, every time a directory is opened through Nextcloud, its contents are refreshed (this requires a setting in Nextcloud—the default behavior is not to refresh).
+The reason for mounting it separately for every user is that this way, access can be managed individually.&lt;/p&gt;
+
+&lt;p&gt;However, Nextcloud needs all the files inside the shared directory to be owned by the user &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data&lt;/code&gt; (UID: 33) and the group &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users&lt;/code&gt; (GID: 100).
+To achieve this, I don’t run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chown&lt;/code&gt; every hour but instead set SMB to force the user and group to these values, and all my Docker containers are also called with these process IDs.
+In the case of qBittorrent and the *Arr stack, it can be achieved by the following environment variables (inside their Compose files):&lt;/p&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;environment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PUID=33&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;PGID=100&lt;/span&gt;
+  &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;UMASK=002&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;In the case of Jellyfin, it’s a little different; it needs the following line:&lt;/p&gt;
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;33:100&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PUID&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PGID&lt;/code&gt; are the process user and group IDs.
+The UMASK value makes all the files readable and writable for the user &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data&lt;/code&gt; and also the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;users&lt;/code&gt; group while making them read-only for everyone else.
+This may be a security risk, but it’s not a gaping hole in my system so that every script kiddie can come and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rm -rf&lt;/code&gt; my system—just that it’ll be easier for them to ruin my day once they are in.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Nextcloud is a good suite of applications for those looking to de-Google their life.
+To get the most out of it, my main storage is attached as an external volume.
+The only downside is that other services will need to respect Nextcloud’s permissions: files shall be owned by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data:users&lt;/code&gt; (33:100), which can be set for my other Docker services one way or another, and SMB also provides a way to overwrite ownership permissions.&lt;/p&gt;</content><author><name></name></author><category term="home server" /><summary type="html">This is part four of my server write-up. In the last part, I wrote about networking on my home server. This time, I’ll let you in on a little secret about how I share one drive between my various applications without ownership/permission problems. I derived this configuration from the Nextcloud, Servarr, and smbd documentation. As a reminder, my NAS is still running Openmediavault on a RockPro64 with 1 TB of RAID-1 redundant HDD storage and 500 GB of non-redundant SSD storage. The first is for bulk storage, and the second is for caching and backups.</summary></entry><entry><title type="html">Server Setup Part 2 - Networking</title><link href="http://localhost:4000/2024/11/25/networking.html" rel="alternate" type="text/html" title="Server Setup Part 2 - Networking" /><published>2024-11-25T00:00:00+01:00</published><updated>2024-11-25T00:00:00+01:00</updated><id>http://localhost:4000/2024/11/25/networking</id><content type="html" xml:base="http://localhost:4000/2024/11/25/networking.html">&lt;p&gt;This is part three of my server writeup.
 I’ll take a look at the networking services running on my homelab.
 As usual, this is not a tutorial but merely a reminder for myself of what I have (or had) and a source of inspiration for others.&lt;/p&gt;
 
