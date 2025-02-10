@@ -85,9 +85,9 @@ begin
 
     L_DUT: entity work.blink
         port map(
-            led_o    => led,
-            clk      => clk,
-            areset   => areset
+            led_o  => led,
+            clk    => clk,
+            areset => areset
         );
 end architecture tb;
 ```
@@ -105,7 +105,7 @@ defaultlib.files = [
 
 Apart from creating my sources, simulating was one of the easiest steps—it just worked.
 The only requirements here are GHDL for elaboration and running the simulation, and GTKWave for viewing the output waveform.
-The process is well documented in GHDL's documentation (see #Sources).
+The process is well documented in [GHDL's documentation](https://ghdl.github.io/ghdl/using/Simulation.html).
 All I had to do was:
 ```sh
 mkdir ./workdir
@@ -160,12 +160,12 @@ To stay safe, I omitted the `std=08` flag everywhere.
 # Place & route with NextPNR
 
 Once I had a netlist, I proceeded to use NextPNR to place and route it to actual components in the FPGA.
-My device is an Artix 7, specifically the XC7A35T CPG236-1 as part of a Digilent CMOD A7 devboard.
-I first made the mistake of using the `nextpnr-xilinx` fork, which is not maintained regularly and thus much behind `nextpnr` and refused to work for me.
-A bit of information that was unnecessarily hard to find is that the himbaechel backend of NextPNR (which is built into the `nextpnr` package provided by the copr repo) supports Xilinx 7 FPGAs—including my Artix 7.
+My device is an Artix 7 (XC7A35T CPG236-1) as part of a Digilent CMOD A7 devboard.
+I first made the mistake of using the `nextpnr-xilinx` fork, which is not maintained regularly and refused to work for me.
+A bit of information that was unnecessarily hard to find is that the himbaechel backend of NextPNR (which is built into the `nextpnr` package provided by the Copr repo) supports Xilinx 7 FPGAs—including my Artix 7.
 
 An `xdc` file is required to map top-level inputs and outputs to physical pins.
-I derived this from the [CMOD A7's xdc file](https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc) provided by digilent:
+I derived this from the [CMOD A7's xdc file](https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc) provided by Digilent:
 ```xdc
 set_property LOC L17 [get_ports {clk}]
 set_property IOSTANDARD LVCMOS33 [get_ports {clk}]
@@ -180,10 +180,10 @@ set_property IOSTANDARD LVCMOS33 [get_ports {areset}]
 I spent an embarrassing amount of time debugging an error caused by comments (and semicolons) at the end of the xdc file's lines.
 These completely break NextPNR's xdc parser, so they had to go.
 
-I also used the xdc file to specify my timing constraints (this time the 12 MHz clock) but due to limitations of NextPNR isn't used for static timing analysis (STA).
+I also used the this file to specify my timing constraints (the 12 MHz clock of the CMOD A7) but due to limitations of NextPNR isn't used for static timing analysis (STA).
 To check if my design can operate at the required frequency, I had to specify an additional argument.
 NextPNR doesn't know the `-add`, `-name` and `-waveform` arguments (I guess they are used by Vivado for simulation), but only shows a warning if they are left in.
-My place and route command looked like this:
+My final place and route command thus looked like this:
 ```sh
 nextpnr-himbaechel --device xc7a35tcpg236-1 --json ./build/blink.json -o xdc="Cmod-A7-Master.xdc" --write ./build/blink_routed.json  -o fasm=./build/blink.fasm --router router2 --freq 12
 ```
@@ -198,27 +198,27 @@ To write the configuration to the FPGA I needed it in a loadable format.
 For Xilinx devices it's a bitstream, also known as `.bit` files.
 I achieved this in two steps: first I converted the `fasm` file to `frames`, then `frames` to `bit`.
 The software collection that's going to help me generate programming files for the Artix 7 (and for Xilinx FPGAs in general) is called Project X-Ray.
-I preformet the first step with Xray's `fasm2frames` tool, which is sadly broken in the package form the copr repo.
-As a dirty fix, I cloned the [projectxray GitHUB repo](https://github.com/f4pga/prjxray) (to `~/.local/bin/build_stage/`) then used the script in its sources like this:
+I preformet the first step with Xray's `fasm2frames` tool, which is sadly broken in the package form the Copr repo.
+As a dirty fix, I cloned the [Project X-Ray GitHUB repo](https://github.com/f4pga/prjxray) (to `~/.local/bin/build_stage/`) then used the script in its sources like this:
 ```sh
 python ~/.local/bin/build_stage/prjxray/utils/fasm2frames.py --db-root /usr/share/xray/database/artix7 --part xc7a35tcpg236-1 ./build/blink.fasm ./build/blink.frames
 ```
 I still had to source database from the `projectxray-data` package, as it's not stored in the GitHUB repo directly.
 
 For step two, I employed the tool `xc7frames2bit` that worked from the installation.
-This saved me some time as I would have had to compile this program otherwise (since it's written in c, unlike `fasm2frames`).
+This saved me some time as I would have had to compile this program otherwise (since it's written in C, unlike `fasm2frames`).
 The command I used for the conversion is what you'd expect:
 ```sh
-xc7frames2bit --part_file  /usr/share/xray/database/artix7/xc7a35tcpg236-1/part.yaml --frm_file ./build/blink.frames --output_file ./build/blink.bit
+xc7frames2bit --part_file /usr/share/xray/database/artix7/xc7a35tcpg236-1/part.yaml --frm_file ./build/blink.frames --output_file ./build/blink.bit
 ```
-Note that depending on the installation of Project X-Ray, the database directory may be different from mine, find or locate commands can be used to determine the exact path.
+Note that depending on the installation of Project X-Ray, the database directory may be different from mine; find or locate commands can be used to determine the exact path.
 Same goes for the part number: different FPGAs from different families need different databases/partfiles.
 
 
 # Programming with openFPGAloader
 
 At last I have my bitstream.
-Getting this on the FPGA required the `openFPGAloader` package, also provided by the copr repo.
+Getting this on the FPGA required the `openFPGAloader` package, also provided by the Copr repo.
 For now I loaded the configuration into SRAM, but the CMOD A7 also comes with a serial flash memory to store the config.
 The command I used to write the sram looked like this:
 ```sh
@@ -243,15 +243,15 @@ Advanced features like post-layout synthesis, IP core wizzards and graphical pin
 On the other hand, these tools feel very fast, especially the synthesis workflow.
 I haven't done any benchmarks, but especially with Modelsim's free edition slowing down significantly over 10000 lines GHDL should be able to compete with it.
 Also, since all of them (except GTKWave) are command-line tools, their outputs are mostly in plain text, they fit the general tools of open-source development rather well (eg. git and make).
-This make them feel more ergonomic for a nerd like me, who even edits text in the terminal.
+This makes them feel more ergonomic for a nerd like me, who even edits text in the terminal.
 All in all I wouldn't use them in my dayjob (they are just not on par with vendor IDEs), but they'll do fine for my hobby projects.
 
 
-# sources:
-nextpnr-himbaechel usage: https://github.com/YosysHQ/nextpnr/tree/master/himbaechel/uarch/xilinx/examples/arty-a35
-general workflow: https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md https://github.com/BrunoLevy/learn-fpga/blob/master/Basic/ARTY/ARTY_blink/makeit.sh
-CMOD A7 docs: https://digilent.com/reference/_media/reference/programmable-logic/cmod-a7/cmod_a7_rm.pdf
-CMOD a7 xdc file: https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc
-GHDL Simulation: https://ghdl.github.io/ghdl/using/Simulation.html
-GHDL synthesis: https://github.com/ghdl/ghdl-yosys-plugin, https://wiki.f-si.org/images/b/b3/Ghdl-FSiC2022.pdf
-Project X-Ray: https://github.com/f4pga/prjxray
+# Sources:
+nextpnr-himbaechel usage: [https://github.com/YosysHQ/nextpnr/tree/master/himbaechel/uarch/xilinx/examples/arty-a35](https://github.com/YosysHQ/nextpnr/tree/master/himbaechel/uarch/xilinx/examples/arty-a35)
+general workflow: [https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md](https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md), [https://github.com/BrunoLevy/learn-fpga/blob/master/Basic/ARTY/ARTY_blink/makeit.sh](https://github.com/BrunoLevy/learn-fpga/blob/master/Basic/ARTY/ARTY_blink/makeit.sh)
+CMOD A7 docs: [https://digilent.com/reference/_media/reference/programmable-logic/cmod-a7/cmod_a7_rm.pdf](https://digilent.com/reference/_media/reference/programmable-logic/cmod-a7/cmod_a7_rm.pdf)
+CMOD a7 xdc file: [https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc](https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc)
+GHDL Simulation: [https://ghdl.github.io/ghdl/using/Simulation.html](https://ghdl.github.io/ghdl/using/Simulation.html)
+GHDL synthesis: [https://github.com/ghdl/ghdl-yosys-plugin](https://github.com/ghdl/ghdl-yosys-plugin), [https://wiki.f-si.org/images/b/b3/Ghdl-FSiC2022.pdf](https://wiki.f-si.org/images/b/b3/Ghdl-FSiC2022.pdf)
+Project X-Ray: [https://github.com/f4pga/prjxray](https://github.com/f4pga/prjxray)

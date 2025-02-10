@@ -1,4 +1,231 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-09T22:40:03+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">The Self-Contradiction of Spice and Wolf</title><link href="http://localhost:4000/2025/01/09/Spice-and-Wolf.html" rel="alternate" type="text/html" title="The Self-Contradiction of Spice and Wolf" /><published>2025-01-09T00:00:00+01:00</published><updated>2025-01-09T00:00:00+01:00</updated><id>http://localhost:4000/2025/01/09/Spice-and-Wolf</id><content type="html" xml:base="http://localhost:4000/2025/01/09/Spice-and-Wolf.html">&lt;p&gt;I really enjoyed the 2008 &lt;em&gt;Spice and Wolf&lt;/em&gt; series when I watched it, so I was excited to hear it was being worked on again.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-02-10T01:56:26+01:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Derisis13’s temporary blog</title><subtitle>Just some nerd rambling</subtitle><entry><title type="html">How I got started with open-source FPGA development</title><link href="http://localhost:4000/2025/02/10/open-source-fpga-development.html" rel="alternate" type="text/html" title="How I got started with open-source FPGA development" /><published>2025-02-10T00:00:00+01:00</published><updated>2025-02-10T00:00:00+01:00</updated><id>http://localhost:4000/2025/02/10/open-source-fpga-development</id><content type="html" xml:base="http://localhost:4000/2025/02/10/open-source-fpga-development.html">&lt;p&gt;In the software world, open-source toolchains are taken for granted.
+In the FPGA/hardware world, the situation is not as good, but with the right choice of FPGA, it is feasible.
+Allow me to tell my tale about how I succeeded in bringing up my Artix devboard with only open-source programs.&lt;/p&gt;
+
+&lt;h1 id=&quot;writing-vhdl-in-neovim&quot;&gt;Writing VHDL in Neovim&lt;/h1&gt;
+
+&lt;p&gt;My go-to text editor is Neovim.
+I’ve been using it for years (I think I picked it up in 2022), and it stuck with me.
+I’m not particularly good at it (I only know the basic keybinds), but it’s already better than anything else I’ve tried.
+The most important tools for VHDL are the language server: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vhdl-ls&lt;/code&gt; (also known as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rust_hdl&lt;/code&gt;), the Treesitter VHDL grammar, and my snippets.
+My config—based on NvChad—can be found in my dotfiles repository.&lt;/p&gt;
+
+&lt;p&gt;For the sake of trying out the toolchains, I made the simplest possible LED blinking example:&lt;/p&gt;
+&lt;div class=&quot;language-vhdl highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Test entity for synthesis&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;library&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ieee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ieee&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std_logic_1164&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ieee&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NUMERIC_STD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blink&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;led_o&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;    &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;areset&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;architecture&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rtl&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blink&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;signal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt;   &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;downto&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;-- around 1 Hz with 12 MHz oscillator&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;signal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;led_state&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;L_BLINK_PROC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rising_edge&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;areset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;1&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;others&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;led_state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+                    &lt;span class=&quot;n&quot;&gt;led_state&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;led_state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;L_BLINK_PROC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;led_o&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;led_state&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;architecture&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rtl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I also made a simple testbench so I could try simulation too:&lt;/p&gt;
+&lt;div class=&quot;language-vhdl highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- Testbench for the blink example&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb_blink&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb_blink&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;library&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ieee&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ieee&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std_logic_1164&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;architecture&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb_blink&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;is&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;signal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;      &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;signal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;areset_n&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;signal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;led&lt;/span&gt;      &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;std_logic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;areset_n&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;1&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;0&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;after&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;L_STIM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;process&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;begin&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;24&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;loop&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;wait&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;1&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;wait&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;sc&quot;&gt;&apos;0&apos;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;loop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;wait&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;process&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;L_STIM&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;L_DUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;entity&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;work&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blink&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;port&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;led_o&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;led&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;clk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;areset&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;areset&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;architecture&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The two files are named &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blink.vhd&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tb_blink.vhd&lt;/code&gt;.
+For &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vhdl-ls&lt;/code&gt;, I also made a descriptor file (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;vhdl-ls.toml&lt;/code&gt;):&lt;/p&gt;
+&lt;div class=&quot;language-toml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nn&quot;&gt;[libraries]&lt;/span&gt;
+&lt;span class=&quot;py&quot;&gt;defaultlib.files&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;&quot;*.vhd&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;simulation-with-ghdl-and-gtkwave&quot;&gt;Simulation with GHDL and GTKWave&lt;/h1&gt;
+
+&lt;p&gt;Apart from creating my sources, simulating was one of the easiest steps—it just worked.
+The only requirements here are GHDL for elaboration and running the simulation, and GTKWave for viewing the output waveform.
+The process is well documented in &lt;a href=&quot;https://ghdl.github.io/ghdl/using/Simulation.html&quot;&gt;GHDL’s documentation&lt;/a&gt;.
+All I had to do was:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; ./workdir
+ghdl &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--workdir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;./workdir blink.vhd tb_blink.vhd
+ghdl &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--workdir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;./workdir tb_blink
+ghdl &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--workdir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;./workdir tb_blink &lt;span class=&quot;nt&quot;&gt;--wave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;wave.ghw
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The first GHDL command (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-a&lt;/code&gt;) analyzes the source files into the directory we just created (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;./workdir&lt;/code&gt;).
+The second GHDL command (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-e&lt;/code&gt;) elaborates the top-level entity, creating the simulation binary.
+The third one runs the simulation, writing the output waveform into &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wave.ghw&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Do note that for analysis, source files are referenced, but for elaboration and running, entity names have to be specified instead of filenames.
+Additionally, elaboration and running can be combined into a single command:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ghdl &lt;span class=&quot;nt&quot;&gt;--elab-run&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--workdir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;./workdir tb_blink &lt;span class=&quot;nt&quot;&gt;--wave&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;wave.ghw
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;To view the output, I could open GTKWave graphically and then open the file from the picker, or run it from the CLI like this (this still opens a GUI window):&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gtkwave wave.ghw
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;GTKWave is an OK viewer; at least I don’t have to re-run the simulation when I want to look at a new signal, unlike with ModelSim.&lt;/p&gt;
+
+&lt;h1 id=&quot;synthesis-with-ghdl-and-yosys&quot;&gt;Synthesis with GHDL and Yosys&lt;/h1&gt;
+
+&lt;p&gt;But GHDL isn’t just a simulator.
+It can also do—albeit experimental—synthesis and technology mapping by hooking into Yosys.
+This is so much in development that not many packages are provided—I was lucky that someone had already made a &lt;a href=&quot;https://copr.fedorainfracloud.org/coprs/rezso/HDL/&quot;&gt;Copr repo&lt;/a&gt; for it, so I didn’t have to compile it on my Fedora machine.
+I also saw an AUR package for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ghdl-yosys-plugin&lt;/code&gt;, so following along on Arch is probably easy too.
+I do not know anything about Debian/Ubuntu; there may be a PPA, but if you have to build from source, check this page: &lt;a href=&quot;https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md&quot;&gt;https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;To keep the clutter away from source files, I made a build directory:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; ./build
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;To use the GHDL Yosys plugin, I launched Yosys like this:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yosys &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; ghdl
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Unless you specify &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-m ghdl&lt;/code&gt;, its plugin will be missing when you run Yosys.
+In its console, I first issued &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ghdl blink.vhd -e blink&lt;/code&gt; to elaborate my source(s), with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blink&lt;/code&gt; as the top-level entity.
+Then, I ran &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;synth_xilinx -json ./build/blink.json&lt;/code&gt; to synthesize a netlist into a JSON file, using technology mapping to the Xilinx 7 family.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, a single script for the same commands can be written like:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;yosys &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; ghdl &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;ghdl blink.vhd -e blink; synth_xilinx -json ./build/blink.json&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;One downside is that VHDL 2008 is not—or not completely—supported.
+To stay safe, I omitted the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;std=08&lt;/code&gt; flag everywhere.&lt;/p&gt;
+
+&lt;h1 id=&quot;place--route-with-nextpnr&quot;&gt;Place &amp;amp; route with NextPNR&lt;/h1&gt;
+
+&lt;p&gt;Once I had a netlist, I proceeded to use NextPNR to place and route it to actual components in the FPGA.
+My device is an Artix 7 (XC7A35T CPG236-1) as part of a Digilent CMOD A7 devboard.
+I first made the mistake of using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nextpnr-xilinx&lt;/code&gt; fork, which is not maintained regularly and refused to work for me.
+A bit of information that was unnecessarily hard to find is that the himbaechel backend of NextPNR (which is built into the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;nextpnr&lt;/code&gt; package provided by the Copr repo) supports Xilinx 7 FPGAs—including my Artix 7.&lt;/p&gt;
+
+&lt;p&gt;An &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xdc&lt;/code&gt; file is required to map top-level inputs and outputs to physical pins.
+I derived this from the &lt;a href=&quot;https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc&quot;&gt;CMOD A7’s xdc file&lt;/a&gt; provided by Digilent:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-xdc&quot;&gt;set_property LOC L17 [get_ports {clk}]
+set_property IOSTANDARD LVCMOS33 [get_ports {clk}]
+create_clock -add -name sys_clk_pin -period 83.33 -waveform {0 41.66} [get_ports {clk}]
+
+set_property LOC A17 [get_ports {led_o}]
+set_property IOSTANDARD LVCMOS33 [get_ports {led_o}]
+
+set_property LOC A18 [get_ports {areset}]
+set_property IOSTANDARD LVCMOS33 [get_ports {areset}]
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;I spent an embarrassing amount of time debugging an error caused by comments (and semicolons) at the end of the xdc file’s lines.
+These completely break NextPNR’s xdc parser, so they had to go.&lt;/p&gt;
+
+&lt;p&gt;I also used the this file to specify my timing constraints (the 12 MHz clock of the CMOD A7) but due to limitations of NextPNR isn’t used for static timing analysis (STA).
+To check if my design can operate at the required frequency, I had to specify an additional argument.
+NextPNR doesn’t know the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-add&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-name&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;-waveform&lt;/code&gt; arguments (I guess they are used by Vivado for simulation), but only shows a warning if they are left in.
+My final place and route command thus looked like this:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nextpnr-himbaechel &lt;span class=&quot;nt&quot;&gt;--device&lt;/span&gt; xc7a35tcpg236-1 &lt;span class=&quot;nt&quot;&gt;--json&lt;/span&gt; ./build/blink.json &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;xdc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Cmod-A7-Master.xdc&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--write&lt;/span&gt; ./build/blink_routed.json  &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fasm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;./build/blink.fasm &lt;span class=&quot;nt&quot;&gt;--router&lt;/span&gt; router2 &lt;span class=&quot;nt&quot;&gt;--freq&lt;/span&gt; 12
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--router&lt;/code&gt; argument had little effect on my design, but it was in the NextPNR GitHUB repo’s example code so I left it there assuming it does no harm.
+The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--freq&lt;/code&gt; argument specifies the clock frequency (in megahertz) for STA.
+The output file I’m going to work with in the following section is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;blink.fasm&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;bitstream-generation-with-project-x-ray&quot;&gt;Bitstream generation with Project X-Ray&lt;/h1&gt;
+
+&lt;p&gt;To write the configuration to the FPGA I needed it in a loadable format.
+For Xilinx devices it’s a bitstream, also known as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bit&lt;/code&gt; files.
+I achieved this in two steps: first I converted the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fasm&lt;/code&gt; file to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;frames&lt;/code&gt;, then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;frames&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bit&lt;/code&gt;.
+The software collection that’s going to help me generate programming files for the Artix 7 (and for Xilinx FPGAs in general) is called Project X-Ray.
+I preformet the first step with Xray’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fasm2frames&lt;/code&gt; tool, which is sadly broken in the package form the Copr repo.
+As a dirty fix, I cloned the &lt;a href=&quot;https://github.com/f4pga/prjxray&quot;&gt;Project X-Ray GitHUB repo&lt;/a&gt; (to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.local/bin/build_stage/&lt;/code&gt;) then used the script in its sources like this:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python ~/.local/bin/build_stage/prjxray/utils/fasm2frames.py &lt;span class=&quot;nt&quot;&gt;--db-root&lt;/span&gt; /usr/share/xray/database/artix7 &lt;span class=&quot;nt&quot;&gt;--part&lt;/span&gt; xc7a35tcpg236-1 ./build/blink.fasm ./build/blink.frames
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;I still had to source database from the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;projectxray-data&lt;/code&gt; package, as it’s not stored in the GitHUB repo directly.&lt;/p&gt;
+
+&lt;p&gt;For step two, I employed the tool &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;xc7frames2bit&lt;/code&gt; that worked from the installation.
+This saved me some time as I would have had to compile this program otherwise (since it’s written in C, unlike &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fasm2frames&lt;/code&gt;).
+The command I used for the conversion is what you’d expect:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;xc7frames2bit &lt;span class=&quot;nt&quot;&gt;--part_file&lt;/span&gt; /usr/share/xray/database/artix7/xc7a35tcpg236-1/part.yaml &lt;span class=&quot;nt&quot;&gt;--frm_file&lt;/span&gt; ./build/blink.frames &lt;span class=&quot;nt&quot;&gt;--output_file&lt;/span&gt; ./build/blink.bit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Note that depending on the installation of Project X-Ray, the database directory may be different from mine; find or locate commands can be used to determine the exact path.
+Same goes for the part number: different FPGAs from different families need different databases/partfiles.&lt;/p&gt;
+
+&lt;h1 id=&quot;programming-with-openfpgaloader&quot;&gt;Programming with openFPGAloader&lt;/h1&gt;
+
+&lt;p&gt;At last I have my bitstream.
+Getting this on the FPGA required the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;openFPGAloader&lt;/code&gt; package, also provided by the Copr repo.
+For now I loaded the configuration into SRAM, but the CMOD A7 also comes with a serial flash memory to store the config.
+The command I used to write the sram looked like this:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/openFPGALoader &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; cmoda7_35t ./build/blink.bit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;And flashing would’ve looked like this:&lt;/p&gt;
+&lt;div class=&quot;language-sh highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/openFPGALoader &lt;span class=&quot;nt&quot;&gt;-b&lt;/span&gt; cmoda7_35t &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; blink.bit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Once this was complete, I had a led blinking at approximately 0.5 Hz.
+Project success!&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;While it’s a far cry from proprietary integrated development environments, fully open-source FPGA synthesis is possible.
+It’s limited to Xilinx, Lattice and some other manufacturers (and even here the supported devices/families are limited too).
+The weak points are no or limited VHDL 2008 support, the difficulty of hunting down every component (and their documentation).
+Thus the barrier to entry is quite high, it took me roughly a day to get it all sorted out with prior knowledge of FPGAs and minimal prior knowledge of the software used.
+Advanced features like post-layout synthesis, IP core wizzards and graphical pin planners are either non-existent or not practical.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, these tools feel very fast, especially the synthesis workflow.
+I haven’t done any benchmarks, but especially with Modelsim’s free edition slowing down significantly over 10000 lines GHDL should be able to compete with it.
+Also, since all of them (except GTKWave) are command-line tools, their outputs are mostly in plain text, they fit the general tools of open-source development rather well (eg. git and make).
+This makes them feel more ergonomic for a nerd like me, who even edits text in the terminal.
+All in all I wouldn’t use them in my dayjob (they are just not on par with vendor IDEs), but they’ll do fine for my hobby projects.&lt;/p&gt;
+
+&lt;h1 id=&quot;sources&quot;&gt;Sources:&lt;/h1&gt;
+&lt;p&gt;nextpnr-himbaechel usage: &lt;a href=&quot;https://github.com/YosysHQ/nextpnr/tree/master/himbaechel/uarch/xilinx/examples/arty-a35&quot;&gt;https://github.com/YosysHQ/nextpnr/tree/master/himbaechel/uarch/xilinx/examples/arty-a35&lt;/a&gt;
+general workflow: &lt;a href=&quot;https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md&quot;&gt;https://github.com/BrunoLevy/learn-fpga/blob/master/FemtoRV/TUTORIALS/toolchain_arty.md&lt;/a&gt;, &lt;a href=&quot;https://github.com/BrunoLevy/learn-fpga/blob/master/Basic/ARTY/ARTY_blink/makeit.sh&quot;&gt;https://github.com/BrunoLevy/learn-fpga/blob/master/Basic/ARTY/ARTY_blink/makeit.sh&lt;/a&gt;
+CMOD A7 docs: &lt;a href=&quot;https://digilent.com/reference/_media/reference/programmable-logic/cmod-a7/cmod_a7_rm.pdf&quot;&gt;https://digilent.com/reference/_media/reference/programmable-logic/cmod-a7/cmod_a7_rm.pdf&lt;/a&gt;
+CMOD a7 xdc file: &lt;a href=&quot;https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc&quot;&gt;https://github.com/Digilent/digilent-xdc/blob/master/Cmod-A7-Master.xdc&lt;/a&gt;
+GHDL Simulation: &lt;a href=&quot;https://ghdl.github.io/ghdl/using/Simulation.html&quot;&gt;https://ghdl.github.io/ghdl/using/Simulation.html&lt;/a&gt;
+GHDL synthesis: &lt;a href=&quot;https://github.com/ghdl/ghdl-yosys-plugin&quot;&gt;https://github.com/ghdl/ghdl-yosys-plugin&lt;/a&gt;, &lt;a href=&quot;https://wiki.f-si.org/images/b/b3/Ghdl-FSiC2022.pdf&quot;&gt;https://wiki.f-si.org/images/b/b3/Ghdl-FSiC2022.pdf&lt;/a&gt;
+Project X-Ray: &lt;a href=&quot;https://github.com/f4pga/prjxray&quot;&gt;https://github.com/f4pga/prjxray&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><category term="FPGA" /><summary type="html">In the software world, open-source toolchains are taken for granted. In the FPGA/hardware world, the situation is not as good, but with the right choice of FPGA, it is feasible. Allow me to tell my tale about how I succeeded in bringing up my Artix devboard with only open-source programs.</summary></entry><entry><title type="html">The Self-Contradiction of Spice and Wolf</title><link href="http://localhost:4000/2025/01/09/Spice-and-Wolf.html" rel="alternate" type="text/html" title="The Self-Contradiction of Spice and Wolf" /><published>2025-01-09T00:00:00+01:00</published><updated>2025-01-09T00:00:00+01:00</updated><id>http://localhost:4000/2025/01/09/Spice-and-Wolf</id><content type="html" xml:base="http://localhost:4000/2025/01/09/Spice-and-Wolf.html">&lt;p&gt;I really enjoyed the 2008 &lt;em&gt;Spice and Wolf&lt;/em&gt; series when I watched it, so I was excited to hear it was being worked on again.
 After watching &lt;em&gt;Spice and Wolf: MERCHANT MEETS THE WISE WOLF&lt;/em&gt;, I felt the reboot was completely justified.
 I had to get used to the new art style initially, but all in all, it looked good.
 The sounds (the effects, the soundtrack, and the voice acting) were generally very good, and they get extra points for re-casting the voice actors from the 2008 series.&lt;/p&gt;
@@ -590,59 +817,4 @@ This device would have provided its wielder eternal life (much like Transhumanis
 
 &lt;p&gt;Even though the alchemists never succeeded in their original goals (now we see why they didn’t even have a chance) their contribution to natural sciences is not negligible, and they had a comparable impact on the arts and literature.
 They never reached eternal life nor infinite wealth, but from their “failed” experiments came fragments of knowledge, on which modern science is built.
-So I keep smiling at the Transhumanists - as long as their methods are kept clean, I want them to carry out their experiments, and even though they won’t succeed, we can still be grateful for their “failed” attempts.&lt;/p&gt;</content><author><name></name></author><category term="philosophy" /><summary type="html">In this short essay, I’ll examine the idea of the Singularity Feedback Loop. I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.</summary></entry><entry><title type="html">Server Setup Part 0 - Status Quo</title><link href="http://localhost:4000/2023/12/08/statusquo.html" rel="alternate" type="text/html" title="Server Setup Part 0 - Status Quo" /><published>2023-12-08T00:00:00+01:00</published><updated>2023-12-08T00:00:00+01:00</updated><id>http://localhost:4000/2023/12/08/statusquo</id><content type="html" xml:base="http://localhost:4000/2023/12/08/statusquo.html">&lt;p&gt;Since August I’ve been upgrading my home server setup.
-It’s not yet 100% complete, but most of the architectural decisions are already behind me.
-I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something.
-This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade.
-This should serve as a comparison baseline.&lt;/p&gt;
-
-&lt;h2 id=&quot;nas&quot;&gt;NAS&lt;/h2&gt;
-
-&lt;p&gt;I had a 2-bay Synology NAS for some years now.
-It has been passed down to me from a family member along with drives to populate it.
-It’s configured in RAID-1 with 2x 3TB HDDs.
-This capacity was almost filled up, which meant it was time to migrate from it.&lt;/p&gt;
-
-&lt;p&gt;This NAS ran an SMB server, an ISCSI target, a VPN server, a DDNS updater, streamed music and had a BitTorrent client.
-The processor and RAM limitations crippled the responsiveness of these services, and the configuration was very limited as well.
-It was a good computer, but it no longer satisfied my needs - at least not for the price I wanted to pay.&lt;/p&gt;
-
-&lt;h2 id=&quot;linux-server&quot;&gt;Linux server&lt;/h2&gt;
-
-&lt;p&gt;To expand into additional services that my NAS couldn’t provide, I got a cheap laptop with a broken hinge (from a family member as well) and installed the XFCE spin of Fedora workstation on it.
-I like this device for how simple it is: 5W idle power draw, 4-core Intel CPU (passively cooled by a piece of metal), the entire board being just one card, except the socketed RAM and the WLAN card (which I found has no black/whitelist).
-Its IO is limited to 2 USB, 2 SATA (one for ODD) and 100MB internet.
-The keyboard and screen were nice to have when I started out, and the battery came in useful during power outages.&lt;/p&gt;
-
-&lt;p&gt;This would have been a terrible fileserver but it ran PiHole and HomeAssistant in docker with great stability until recently the network interface started having issues.
-Fun fact: this was also the machine I used for building Fedora packages for ani-cli.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-wont-change-now&quot;&gt;What won’t change now&lt;/h2&gt;
-
-&lt;p&gt;I’ll go over a few devices I use at home but won’t change now.
-They are still relevant as services will interact with them.&lt;/p&gt;
-
-&lt;p&gt;I picked up a decent-size UPS from the trash a few years ago - it turned out to only need a new battery.
-Now it has backup power for my NAS and router.&lt;/p&gt;
-
-&lt;p&gt;My networking is done by an ISP-provided all-in-one, which I hate but don’t want to change just now.
-There’s also an unmanaged network switch to provide extra wired connections.&lt;/p&gt;
-
-&lt;p&gt;For media, I have a Chromecast (TV is not smart), a Pi 3 with Kodi and a Pi 1 with Volumio.
-With the exception of the Chromecast they get their files trough mounted SMB shares.&lt;/p&gt;
-
-&lt;p&gt;There are a few IoT devices with open firmware I use for home automation and some that aren’t connected to the internet because their firmware is proprietary, outdated and they would be a security risk to my network.&lt;/p&gt;
-
-&lt;h2 id=&quot;comming-up&quot;&gt;Comming up&lt;/h2&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Host System - the metal that’ll run my services&lt;/li&gt;
-  &lt;li&gt;Filesystem layout - from disks to directories&lt;/li&gt;
-  &lt;li&gt;Networking - connecting to the web&lt;/li&gt;
-  &lt;li&gt;Docker and nextcloud - how not to get in your own way&lt;/li&gt;
-  &lt;li&gt;Torrent and media management - My Lord, is that legal?&lt;/li&gt;
-  &lt;li&gt;Media serving - the forgotten world of DLNA and UPNP/AV&lt;/li&gt;
-  &lt;li&gt;Home automation - my home is smart&lt;/li&gt;
-  &lt;li&gt;Backup strategy - because RAID is not a backup&lt;/li&gt;
-  &lt;li&gt;Migration - moving it all in&lt;/li&gt;
-&lt;/ol&gt;</content><author><name></name></author><category term="home server" /><summary type="html">Since August I’ve been upgrading my home server setup. It’s not yet 100% complete, but most of the architectural decisions are already behind me. I wish to document this process so that others can learn from it and as a reminder for myself if I ever forget how I did something. This is part zero of my writeup, which’ll be about the hardware and software used prior to the upgrade. This should serve as a comparison baseline.</summary></entry></feed>
+So I keep smiling at the Transhumanists - as long as their methods are kept clean, I want them to carry out their experiments, and even though they won’t succeed, we can still be grateful for their “failed” attempts.&lt;/p&gt;</content><author><name></name></author><category term="philosophy" /><summary type="html">In this short essay, I’ll examine the idea of the Singularity Feedback Loop. I’ll touch on Trans- and Posthumanism (which I’ll shorten to Transhumanism) but the focus will be this discipline’s dreaded and awaited messiah: the Technological Singularity.</summary></entry></feed>
