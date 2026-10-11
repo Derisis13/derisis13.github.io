@@ -1,4 +1,8 @@
-# Reflecting on (almost) five years of ani-cli development
+---
+layout: post
+title: "Reflecting on (almost) five years of ani-cli development"
+tag: "open-source"
+---
 
 I was invited to ani-cli's maintainer team on 25th of January, 2022 by port19.
 My first contribution to the project was merged on the 6th of November, 2021.
